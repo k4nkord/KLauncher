@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'src/khomepage.dart';
+import 'src/khomescreen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() => runApp(const KApp());
@@ -9,7 +9,7 @@ class KApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: const KHomePage(), theme: ThemeData(
+    return MaterialApp(home: const KHomeScreen(), theme: ThemeData(
       colorScheme: const ColorScheme.dark(background: Colors.black),
       textTheme: TextTheme(
         bodyMedium: GoogleFonts.exo2(fontSize: 18, fontWeight: FontWeight.w500)

@@ -4,14 +4,14 @@ import 'package:shared_preferences/shared_preferences.dart';
   
 List<String> favorite = [];
 
-class KConfigPage extends StatefulWidget {
-  const KConfigPage({super.key});
+class KConfigScreen extends StatefulWidget {
+  const KConfigScreen({super.key});
 
   @override
-  State<KConfigPage> createState() => _KConfigPageState();
+  State<KConfigScreen> createState() => _KConfigScreenState();
 }
 
-class _KConfigPageState extends State<KConfigPage> {
+class _KConfigScreenState extends State<KConfigScreen> {
   List<Application> apps = [];
   bool initialized = false;
 
@@ -80,9 +80,13 @@ class _AppCheckboxState extends State<AppCheckbox> {
       },
       child: Text(
         widget.app.appName, 
-        style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: choosen ? Theme.of(context).shadowColor : Theme.of(context).textTheme.bodyMedium!.color),
+        style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: choosen ? Theme.of(context).textTheme.bodyMedium!.color : Theme.of(context).shadowColor),
         textAlign: TextAlign.center
       )
     );
   }
+}
+
+Future<dynamic> openConfigScreen(BuildContext context) {
+  return Navigator.push(context, MaterialPageRoute(builder: (context) => const KConfigScreen()));
 }
