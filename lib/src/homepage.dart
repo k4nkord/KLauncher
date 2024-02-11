@@ -69,11 +69,11 @@ class _AppCardState extends State<AppCard> {
   
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return TextButton(
       onPressed: () {
         app.openApp();
       },
-      child: initialized ? Image.memory(app.icon) : const CircularProgressIndicator()
+      child: initialized ? Image.memory(app.icon, width: 50) : const CircularProgressIndicator()
     );
   }
 

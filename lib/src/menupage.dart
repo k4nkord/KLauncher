@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:provider/provider.dart';
+import 'colorschemepage.dart';
 import 'data.dart';
 
 class MenuPage extends StatefulWidget {
@@ -24,6 +25,12 @@ class _MenuPageState extends State<MenuPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+    floatingActionButton: FloatingActionButton(onPressed: () {Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const ColorSchemePage()));
+      },
+      child: const Icon(Icons.colorize)
+    ), 
     body:
           initialized ? ListView(
             children: List.generate(
@@ -59,7 +66,9 @@ class _AppMenuItemState extends State<AppMenuItem> {
   Widget build(BuildContext context) {
     var data = context.watch<Data>();
     favorite ??= data.isFavorite(widget.app.packageName);
-    return TextButton(
+    return Container(
+      margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+      child: TextButton(
       onPressed: () {
           widget.app.openApp();
       },
@@ -112,6 +121,6 @@ class _AppMenuItemState extends State<AppMenuItem> {
         widget.app.appName,
       ),
       ])
-    );
+    ));
   }
 }

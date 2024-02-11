@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Data with ChangeNotifier {
   List<String> _favorites = [];
   bool _darkTheme = true;
-  bool _bg = false;
   Color _seedColor = Colors.white;
   Color _secondaryColor = const Color(0xff222222);
 
@@ -23,13 +22,6 @@ class Data with ChangeNotifier {
   set darkTheme (bool theme) {
     _darkTheme = theme;
     saveData('darkTheme', _darkTheme);
-    notifyListeners();
-  }
-
-  bool get bg => _bg;
-  set bg (bool value) {
-    _bg = value;
-    saveData('bg', _bg);
     notifyListeners();
   }
 
