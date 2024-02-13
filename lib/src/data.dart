@@ -6,6 +6,7 @@ class Data with ChangeNotifier {
   bool _darkTheme = true;
   Color _seedColor = Colors.white;
   Color _secondaryColor = const Color(0xff222222);
+  PageController controller = PageController();
 
   Data() {
     _init();
@@ -49,6 +50,11 @@ class Data with ChangeNotifier {
     saveData('favorites', _favorites);
     notifyListeners();
   }
+
+  void setPage(int page) {
+    controller.jumpToPage(page);
+  }
+  double get page => controller.page ?? 0.0;
 
   bool isFavorite(String packageName) => _favorites.contains(packageName);
 

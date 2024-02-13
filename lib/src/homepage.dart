@@ -28,12 +28,13 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var seedColor = context.watch<Data>().seedColor;
     return Scaffold(
       body: FutureBuilder(
       future: loadApps(context.watch<Data>()),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(child: CircularProgressIndicator(color: seedColor));
         }
         return GridView(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
@@ -70,6 +71,7 @@ class _AppCardState extends State<AppCard> {
   @override
   Widget build(BuildContext context) {
     var data = context.watch<Data>();
+    var seedColor = data.seedColor;
     return Container(
       margin: const EdgeInsets.all(10),
       decoration: BoxDecoration(
@@ -83,7 +85,7 @@ class _AppCardState extends State<AppCard> {
             onLongPress: () {
               data.removeFavorite(app.packageName);
             },
-            child: initialized ? Image.memory(app.icon) : const CircularProgressIndicator()
+            child: initialized ? Image.memory(app.icon) : CircularProgressIndicator(color: seedColor)
           ));
   }
 

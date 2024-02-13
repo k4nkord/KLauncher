@@ -24,6 +24,7 @@ class _MenuPageState extends State<MenuPage> {
 
   @override
   Widget build(BuildContext context) {
+    var seedColor = context.watch<Data>().seedColor;
     return Scaffold(
     floatingActionButton: FloatingActionButton(onPressed: () {Navigator.push(
       context,
@@ -37,7 +38,7 @@ class _MenuPageState extends State<MenuPage> {
               apps.length,
               (index) => AppMenuItem(apps[index])
             )
-    )  : const Center(child: CircularProgressIndicator()));
+    )  : Center(child: CircularProgressIndicator(color: seedColor)));
   }
 
   @override
@@ -71,6 +72,7 @@ class _AppMenuItemState extends State<AppMenuItem> {
       child: TextButton(
       onPressed: () {
           widget.app.openApp();
+          data.setPage(0);
       },
       onLongPress: () {
         setState(() {
@@ -91,21 +93,25 @@ class _AppMenuItemState extends State<AppMenuItem> {
             }
             setState(() {
               favorite = !favorite!;
+              editMode = !editMode;
             });
           },
           child: Icon(
             favorite! ?
               Icons.star : Icons.star_outline),
         ),
+        const SizedBox(width: 10),
         TextButton(
           onPressed: () {
             setState(() {
               editMode = false;
             });
             widget.app.openSettingsScreen();
+            data.setPage(0);
           },
           child: const Icon(Icons.settings)
         ),
+        const SizedBox(width: 10),
         TextButton(
           onPressed: () {
             setState(() {

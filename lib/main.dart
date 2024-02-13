@@ -23,10 +23,12 @@ class _KAppState extends State<KApp> {
     var data = context.watch<Data>();
     return 
       MaterialApp(
-        home: PageView(children: const [
-          HomePage(),
-          MenuPage(),
-        ]),
+        home: PageView(
+          controller: context.watch<Data>().controller,
+          children: const [
+            HomePage(),
+            MenuPage(),
+          ]),
         theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(
               seedColor: data.seedColor,
@@ -47,7 +49,7 @@ class _KAppState extends State<KApp> {
             floatingActionButtonTheme: FloatingActionButtonThemeData(
               backgroundColor: data.seedColor,
               foregroundColor: data.secondaryColor,
-            )
+            ),
             ));
   }
 }
