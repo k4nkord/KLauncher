@@ -43,6 +43,10 @@ class _KAppState extends State<KApp> {
                 backgroundColor: data.secondaryColor,
                 foregroundColor: data.seedColor,
               )
+            ),
+            floatingActionButtonTheme: FloatingActionButtonThemeData(
+              backgroundColor: data.seedColor,
+              foregroundColor: data.secondaryColor,
             )
             ));
   }
