@@ -30,21 +30,20 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var seedColor = context.watch<Data>().seedColor;
     return Scaffold(
-      body: FutureBuilder(
-      future: loadApps(context.watch<Data>()),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator(color: seedColor));
-        }
-        return GridView(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
-        children: List.generate(
-          (snapshot.data as List<String>).length,
-          (index) => AppCard(snapshot.data![index])
-        )
-      );
-      })
-    ); 
+        body: FutureBuilder(
+            future: loadApps(context.watch<Data>()),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                    child: CircularProgressIndicator(color: seedColor));
+              }
+              return GridView(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4),
+                  children: List.generate(
+                      (snapshot.data as List<String>).length,
+                      (index) => AppCard(snapshot.data![index])));
+            }));
   }
 }
 
@@ -62,31 +61,33 @@ class _AppCardState extends State<AppCard> {
   bool initialized = false;
 
   void _init() async {
-    app = (await DeviceApps.getApp(widget.packageName, true)) as ApplicationWithIcon;
+    app = (await DeviceApps.getApp(widget.packageName, true))
+        as ApplicationWithIcon;
     setState(() {
       initialized = true;
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     var data = context.watch<Data>();
     var seedColor = data.seedColor;
     return Container(
-      margin: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.secondary,
-        borderRadius: BorderRadius.circular(7.5),
-      ),
-          child: TextButton(
+        margin: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.secondary,
+          borderRadius: BorderRadius.circular(7.5),
+        ),
+        child: TextButton(
             onPressed: () {
               app.openApp();
             },
             onLongPress: () {
               data.removeFavorite(app.packageName);
             },
-            child: initialized ? Image.memory(app.icon) : CircularProgressIndicator(color: seedColor)
-          ));
+            child: initialized
+                ? Image.memory(app.icon)
+                : CircularProgressIndicator(color: seedColor)));
   }
 
   @override

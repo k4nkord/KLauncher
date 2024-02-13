@@ -13,28 +13,28 @@ class Data with ChangeNotifier {
   }
 
   List<String> get favorites => _favorites;
-  set favorites (List<String> favorites) {
+  set favorites(List<String> favorites) {
     _favorites = favorites;
     saveData('favorites', _favorites);
     notifyListeners();
   }
 
   bool get darkTheme => _darkTheme;
-  set darkTheme (bool theme) {
+  set darkTheme(bool theme) {
     _darkTheme = theme;
     saveData('darkTheme', _darkTheme);
     notifyListeners();
   }
 
   Color get seedColor => _seedColor;
-  set seedColor (Color color) {
+  set seedColor(Color color) {
     _seedColor = color;
     saveData('seedColor', _seedColor.value);
     notifyListeners();
   }
 
   Color get secondaryColor => _secondaryColor;
-  set secondaryColor (Color color) {
+  set secondaryColor(Color color) {
     _secondaryColor = color;
     saveData('secondaryColor', _secondaryColor.value);
     notifyListeners();
@@ -45,6 +45,7 @@ class Data with ChangeNotifier {
     saveData('favorites', _favorites);
     notifyListeners();
   }
+
   void removeFavorite(String packageName) {
     _favorites.remove(packageName);
     saveData('favorites', _favorites);
@@ -54,6 +55,7 @@ class Data with ChangeNotifier {
   void setPage(int page) {
     controller.jumpToPage(page);
   }
+
   double get page => controller.page ?? 0.0;
 
   bool isFavorite(String packageName) => _favorites.contains(packageName);
@@ -74,7 +76,8 @@ class Data with ChangeNotifier {
     _favorites = prefs.getStringList('favorites') ?? [];
     _darkTheme = prefs.getBool('darkTheme') ?? true;
     _seedColor = Color(prefs.getInt('seedColor') ?? _seedColor.value);
-    _secondaryColor = Color(prefs.getInt('secondaryColor') ?? _secondaryColor.value);
+    _secondaryColor =
+        Color(prefs.getInt('secondaryColor') ?? _secondaryColor.value);
     notifyListeners();
   }
 }
