@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
           return const Center(child: CircularProgressIndicator());
         }
         return GridView(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 5),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
         children: List.generate(
           (snapshot.data as List<String>).length,
           (index) => AppCard(snapshot.data![index])
@@ -69,12 +69,22 @@ class _AppCardState extends State<AppCard> {
   
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () {
-        app.openApp();
-      },
-      child: initialized ? Image.memory(app.icon, width: 50) : const CircularProgressIndicator()
-    );
+    var data = context.watch<Data>();
+    return Container(
+      margin: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.secondary,
+        borderRadius: BorderRadius.circular(7.5),
+      ),
+          child: TextButton(
+            onPressed: () {
+              app.openApp();
+            },
+            onLongPress: () {
+              data.removeFavorite(app.packageName);
+            },
+            child: initialized ? Image.memory(app.icon) : const CircularProgressIndicator()
+          ));
   }
 
   @override
