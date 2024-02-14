@@ -32,6 +32,10 @@ class _KAppState extends State<KApp> {
               background: data.darkTheme ? Colors.black : Colors.white,
               secondary: data.secondaryColor),
           textTheme: TextTheme(
+              bodyLarge: GoogleFonts.exo2(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  color: data.secondaryColor),
               bodyMedium:
                   GoogleFonts.exo2(fontSize: 18, fontWeight: FontWeight.w500),
               bodySmall: GoogleFonts.exo2(
