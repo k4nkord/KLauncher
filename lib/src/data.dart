@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
+import 'package:access_wallpaper/access_wallpaper.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:device_apps/device_apps.dart';
 
 class Data with ChangeNotifier {
   List<String> _favorites = [];
@@ -7,6 +11,7 @@ class Data with ChangeNotifier {
   Color _seedColor = Colors.white;
   Color _secondaryColor = const Color(0xff222222);
   PageController controller = PageController();
+  Uint8List? wallpaper;
 
   Data() {
     _init();
@@ -74,10 +79,36 @@ class Data with ChangeNotifier {
   void _init() async {
     var prefs = await SharedPreferences.getInstance();
     _favorites = prefs.getStringList('favorites') ?? [];
+    checkFavorites();
     _darkTheme = prefs.getBool('darkTheme') ?? true;
     _seedColor = Color(prefs.getInt('seedColor') ?? _seedColor.value);
     _secondaryColor =
         Color(prefs.getInt('secondaryColor') ?? _secondaryColor.value);
+    loadWallpaper();
+    notifyListeners();
+  }
+
+  void checkFavorites() async {
+    var bad = [];
+    for (var packageName in _favorites) {
+      if (!await DeviceApps.isAppInstalled(packageName)) {
+        bad.add(packageName);
+      }
+    }
+    for (var packageName in bad) {
+      _favorites.remove(packageName);
+    }
+    if (bad.isNotEmpty) {
+      notifyListeners();
+    }
+  }
+
+  void loadWallpaper() async {
+    await Permission.manageExternalStorage.request();
+    if (await Permission.manageExternalStorage.isGranted) {
+      wallpaper =
+          await AccessWallpaper().getWallpaper(AccessWallpaper.homeScreenFlag);
+    }
     notifyListeners();
   }
 }

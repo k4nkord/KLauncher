@@ -67,10 +67,8 @@ class _MenuPageState extends State<MenuPage> {
     return Scaffold(
         floatingActionButton: FloatingActionButton(
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ColorSchemePage()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ColorSchemePage()));
             },
             child: const Icon(Icons.colorize)),
         body: initialized
@@ -109,8 +107,10 @@ class _AppGroupState extends State<AppGroup> {
         children: [
           Container(
               width: 30,
-              height: 35,
-              decoration: BoxDecoration(color: context.watch<Data>().seedColor),
+              height: 40,
+              margin: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+              decoration:
+                  BoxDecoration(color: Theme.of(context).colorScheme.secondary),
               child: Text(widget.letter,
                   style: Theme.of(context).textTheme.bodyLarge,
                   textAlign: TextAlign.center)),

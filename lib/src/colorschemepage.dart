@@ -4,11 +4,16 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'data.dart';
 
 class ColorSchemePage extends StatelessWidget {
-  const ColorSchemePage({super.key});
+  Color? pickerColor1;
+  Color? pickerColor2;
+
+  ColorSchemePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     var data = context.watch<Data>();
+    pickerColor1 ??= data.seedColor;
+    pickerColor2 ??= data.secondaryColor;
     return Scaffold(
         body: ListView(children: [
       const SizedBox(height: 50),
@@ -20,6 +25,15 @@ class ColorSchemePage extends StatelessWidget {
             },
             child: const Text('dark/light theme switcher')),
       ),
+      Container(
+        margin: const EdgeInsets.all(5),
+        child: TextButton(
+            onPressed: () {
+              data.seedColor = pickerColor1!;
+              data.secondaryColor = pickerColor2!;
+            },
+            child: const Text('apply colorscheme')),
+      ),
       const SizedBox(height: 10),
       Container(
         margin: const EdgeInsets.all(15),
@@ -29,9 +43,9 @@ class ColorSchemePage extends StatelessWidget {
           borderRadius: BorderRadius.circular(15),
         ),
         child: ColorPicker(
-          pickerColor: data.seedColor,
+          pickerColor: pickerColor1!,
           onColorChanged: (color) {
-            data.seedColor = color;
+            pickerColor1 = color;
           },
           colorPickerWidth: 200,
         ),
@@ -44,9 +58,9 @@ class ColorSchemePage extends StatelessWidget {
             borderRadius: BorderRadius.circular(15),
           ),
           child: ColorPicker(
-            pickerColor: data.secondaryColor,
+            pickerColor: pickerColor2!,
             onColorChanged: (color) {
-              data.secondaryColor = color;
+              pickerColor2 = color;
             },
             colorPickerWidth: 200,
           )),

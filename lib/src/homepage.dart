@@ -3,47 +3,29 @@ import 'package:device_apps/device_apps.dart';
 import 'package:provider/provider.dart';
 import 'data.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  Future<List<String>> loadApps(Data data) async {
-    var favorites = data.favorites;
-    bool edited = false;
-    for (var packageName in favorites) {
-      if (!await DeviceApps.isAppInstalled(packageName)) {
-        favorites.remove(packageName);
-        edited = true;
-      }
-    }
-    if (edited) {
-      data.favorites = favorites;
-    }
-    return favorites;
-  }
-
-  @override
   Widget build(BuildContext context) {
-    var seedColor = context.watch<Data>().seedColor;
-    return Scaffold(
-        body: FutureBuilder(
-            future: loadApps(context.watch<Data>()),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                    child: CircularProgressIndicator(color: seedColor));
-              }
-              return GridView(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4),
-                  children: List.generate(
-                      (snapshot.data as List<String>).length,
-                      (index) => AppCard(snapshot.data![index])));
-            }));
+    var favorites = context.watch<Data>().favorites;
+    return context.watch<Data>().wallpaper == null
+        ? Scaffold(
+            body: Center(
+                child: CircularProgressIndicator(
+                    color: context.watch<Data>().seedColor)))
+        : Scaffold(
+            body: Container(
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: MemoryImage(context.watch<Data>().wallpaper!),
+                        fit: BoxFit.cover)),
+                child: GridView(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 4),
+                    children: List.generate(favorites.length,
+                        (index) => AppCard(favorites[index])))));
   }
 }
 
@@ -57,37 +39,33 @@ class AppCard extends StatefulWidget {
 }
 
 class _AppCardState extends State<AppCard> {
-  late ApplicationWithIcon app;
-  bool initialized = false;
+  ApplicationWithIcon? app;
 
   void _init() async {
-    app = (await DeviceApps.getApp(widget.packageName, true))
+    app = await DeviceApps.getApp(widget.packageName, true)
         as ApplicationWithIcon;
-    setState(() {
-      initialized = true;
-    });
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     var data = context.watch<Data>();
-    var seedColor = data.seedColor;
-    return Container(
-        margin: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.secondary,
-          borderRadius: BorderRadius.circular(7.5),
-        ),
-        child: TextButton(
-            onPressed: () {
-              app.openApp();
-            },
-            onLongPress: () {
-              data.removeFavorite(app.packageName);
-            },
-            child: initialized
-                ? Image.memory(app.icon)
-                : CircularProgressIndicator(color: seedColor)));
+    return app != null
+        ? Container(
+            margin: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.secondary,
+              borderRadius: BorderRadius.circular(7.5),
+            ),
+            child: TextButton(
+                onPressed: () {
+                  app!.openApp();
+                },
+                onLongPress: () {
+                  data.removeFavorite(app!.packageName);
+                },
+                child: Image.memory(app!.icon)))
+        : Center(child: CircularProgressIndicator(color: data.seedColor));
   }
 
   @override

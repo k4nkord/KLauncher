@@ -34,8 +34,8 @@ class _KAppState extends State<KApp> {
           textTheme: TextTheme(
               bodyLarge: GoogleFonts.exo2(
                   fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                  color: data.secondaryColor),
+                  fontWeight: FontWeight.w500,
+                  color: data.seedColor),
               bodyMedium:
                   GoogleFonts.exo2(fontSize: 18, fontWeight: FontWeight.w500),
               bodySmall: GoogleFonts.exo2(
@@ -48,9 +48,11 @@ class _KAppState extends State<KApp> {
             foregroundColor: data.seedColor,
           )),
           floatingActionButtonTheme: FloatingActionButtonThemeData(
-            backgroundColor: data.seedColor,
-            foregroundColor: data.secondaryColor,
-          ),
+              backgroundColor: data.seedColor.withAlpha(230),
+              foregroundColor: data.darkTheme
+                  ? Colors.white
+                  : Colors.black //data.secondaryColor,
+              ),
         ));
   }
 }
