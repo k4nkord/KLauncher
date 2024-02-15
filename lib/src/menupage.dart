@@ -151,6 +151,7 @@ class _MenuCardState extends State<MenuCard> {
               width: MediaQuery.of(context).size.width * 0.8,
               child: TextButton(
                   onPressed: () {
+                    data.setPage(0);
                     widget.app.openApp();
                   },
                   onLongPress: () {
